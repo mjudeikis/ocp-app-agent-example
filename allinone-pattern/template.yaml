@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewBuild
+  creationTimestamp: null
+  labels:
+    build: jboss-webserver30-tomcat7-jdk7-openshift
+  name: jboss-webserver30-tomcat7-jdk7-openshift
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jboss-webserver30-tomcat7-jdk7-openshift:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    dockerfile: "FROM registry.access.redhat.com/jboss-webserver-3/webserver30-tomcat7-openshift\nUSER
+      root\nRUN echo 2 | /usr/sbin/alternatives --config java \nRUN echo 2 | /usr/sbin/alternatives
+      --config javac\nENV JAVA_HOME=/usr/lib/jvm/java-1.7.0 \nENV JAVA_VERSION=1.7.0
+      \nUSER 185"
+    type: Dockerfile
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: jboss-webserver30-tomcat7-openshift:latest
+    type: Docker
+  triggers:
+  - github:
+      secret: pj63DWvjR7zY3AR_oBHj
+    type: GitHub
+  - generic:
+      secret: ZFYYKsxsqajto-81bE-u
+    type: Generic
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange
+status:
+  lastVersion: 0
