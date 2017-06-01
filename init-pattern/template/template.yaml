@@ -76,7 +76,7 @@ objects:
           pod.alpha.kubernetes.io/init-containers: '[
               {
                   "name": "install-newrelic",
-                  "image": "mangirdas/newrelic-init",
+                  "image": "172.30.151.14:5000/init-mon/newrelic-init:latest",
                   "imagePullPolicy": "Always",
                   "volumeMounts": [
                       {
@@ -95,7 +95,7 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - image: 172.30.151.14:5000/mon-init/test:latest
+        - image: ${APPLICATION_NAME}:latest
           imagePullPolicy: Always
           name: ${APPLICATION_NAME}
           env: 
@@ -105,7 +105,7 @@ objects:
             valueFrom:
               secretKeyRef:
                 name: newrelic-apikey
-                key: apikey
+                key: API_KEY
           - name: CATALINA_OPTS_APPEND
             value: ${CATALINA_OPTS_APPEND}
           - name: NEW_RELIC_LOG
@@ -133,24 +133,15 @@ objects:
           emptyDir: {}
     test: false
     triggers:
-    - type: ConfigChange
     - imageChangeParams:
         automatic: true
         containerNames:
         - ${APPLICATION_NAME}
         from:
           kind: ImageStreamTag
-          name: test:latest
+          name: ${APPLICATION_NAME}:latest
       type: ImageChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - newrelic
-        from:
-          kind: ImageStreamTag
-          name: newrelic-sidecar:latest
-          namespace: openshift
-      type: ImageChange  
+    - type: ConfigChange
 - apiVersion: v1
   kind: Service
   metadata:

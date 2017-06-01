@@ -78,8 +78,8 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - image: mangirdas/newrelic-sidecar:latest
-          name: newrelic
+        - image: newrelic-sidecar:latest
+          name: newrelic-sidecar
           volumeMounts:
           - mountPath: /newrelic
             name: newrelic-volume
@@ -95,7 +95,7 @@ objects:
             valueFrom:
               secretKeyRef:
                 name: newrelic-apikey
-                key: apikey
+                key: API_KEY
           - name: CATALINA_OPTS_APPEND
             value: ${CATALINA_OPTS_APPEND}
           - name: NEW_RELIC_LOG
@@ -135,11 +135,10 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - newrelic
+        - newrelic-sidecar
         from:
           kind: ImageStreamTag
           name: newrelic-sidecar:latest
-          namespace: openshift
       type: ImageChange  
 - apiVersion: v1
   kind: Service
