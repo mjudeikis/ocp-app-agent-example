@@ -76,7 +76,7 @@ objects:
           pod.alpha.kubernetes.io/init-containers: '[
               {
                   "name": "install-newrelic",
-                  "image": "172.30.151.14:5000/init-mon/newrelic-init:latest",
+                  "image": "mangirdas/newrelic-init:latest",
                   "imagePullPolicy": "Always",
                   "volumeMounts": [
                       {
